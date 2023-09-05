@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,9 +19,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import com.google.accompanist.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,13 +34,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.example.laboratorio6.R
+import com.example.laboratorio6.navigation.Laboratorio6Screens
+import com.example.laboratorio6.ui.theme.Laboratorio6Theme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
@@ -60,6 +69,68 @@ fun Galleryfun(navController: NavController){
         R.drawable.arte8,
         R.drawable.arte9,
         R.drawable.arte10,
+    )
+    val infoList = listOf(
+        //arte1
+        arte(
+            "Noche Estrellada",
+            "Vincent van Gogh",
+            "1889"
+        ),
+        //arte2
+        arte(
+            "La Joven De La Perla",
+            "Johannes Vermeer",
+            "1665"
+        ),
+        //arte3
+        arte(
+            "Las Meninas",
+            "Diego Velázquez",
+            "1656"
+        ),
+        //arte4
+        arte(
+            "El Nacimiento De Venus",
+            "Sandro Botticelli",
+            "1486"
+        ),
+        //arte5
+        arte(
+            "El beso",
+            "Gustav Klimt",
+            "1908"
+        ),
+        //arte6
+        arte(
+            "La Gioconda",
+            "Leonardo da Vinci",
+            "1797"
+        ),
+        //arte7
+        arte(
+            "Retrato",
+            "Nadar",
+            "1439"
+        ),
+        //arte8
+        arte(
+            "La ronda de noche",
+            "Rembrandt",
+            "1642"
+        ),
+        //arte9
+        arte(
+            "Achille Emperaire",
+            "Paul Cézanne",
+            "1868"
+        ),
+        //arte10
+        arte(
+            "Triple retrato de Carlos I",
+            "Anton van Dyck",
+            "1636"
+        ),
     )
     val scope = rememberCoroutineScope()
     Column(
@@ -90,7 +161,7 @@ fun Galleryfun(navController: NavController){
                     .weight(1f)
             ) { page ->
                 Card(
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(5.dp),
                     modifier = Modifier
                         .graphicsLayer {
                             val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
@@ -153,7 +224,40 @@ fun Galleryfun(navController: NavController){
               )
           }
         }
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            val currentInfo = infoList[pagerState.currentPage]
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = currentInfo.title,
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    fontSize = 20.sp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Autor: ${currentInfo.painter}")
+                Text("Año: ${currentInfo.year}")
+            }
+        }
+    }
+    Button(
+        onClick = {
+            navController.navigate(Laboratorio6Screens.LoginScreen.name)
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text("Cerrar Sesión")
     }
 }
 
-
+data class arte(
+    val title: String,
+    val painter: String,
+    val year: String
+)

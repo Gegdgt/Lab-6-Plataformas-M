@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -81,6 +82,7 @@ fun Loginfun(
                 UserForm(
                     isCreateAccount = true
                 ){
+
                         email, password ->
                     Log.d("Hola ", "Se creo una cuenta con $email y $password")
 
@@ -115,6 +117,7 @@ fun UserForm(
     isCreateAccount: Boolean = false,
     onDone: (String, String) -> Unit = {email,pwd ->}
 ) {
+    val showError = remember { mutableStateOf(false) }
     val email = rememberSaveable {
         mutableStateOf("")
     }
@@ -141,11 +144,18 @@ fun UserForm(
             passwordVisible = passwordVisible
         )
         SubmitButton(
-            textId = if(isCreateAccount) "Crear cuenta" else "Login",
+            textId = if (isCreateAccount) "Crear cuenta" else "Login",
             inputValido = valido
-        ){
-            onDone(email.value.trim(), password.value.trim())
-            keyboardController?.hide()
+        ) {
+            try {
+                onDone(email.value.trim(), password.value.trim())
+                keyboardController?.hide()
+            } catch (e: Exception) {
+                showError.value = true
+            }
+        }
+        if (showError.value) {
+            Text("Ingrese correctamente sus datos", color = Color.Red)
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.laboratorio6.screens.login
 
+import android.app.Activity
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 class LoginScreenViewModel: ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
     private val _loading = MutableLiveData(false)
+    private val context = LocalContext
     fun signInWithEmailAndPassword(email: String, password: String, Gallery: ()-> Unit)
     = viewModelScope.launch {
         try {
